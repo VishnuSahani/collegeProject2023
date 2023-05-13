@@ -54,6 +54,8 @@ if(isset($_POST['action']) && !empty($_POST['action'])){
 
         $respo['status'] = true;
         $respo['msg'] = "Successfully Login....!";
+        $_SESSION['superAdminId'] = $id;
+        
 
         echo json_encode($respo);
         die();

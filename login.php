@@ -111,10 +111,19 @@ include("footer.php");
                     let mainRespo = JSON.parse(respo);
                     $("#loginBtn").html("Login").attr("disabled",false);
 
+                    $("#respo-status").html(mainRespo.msg);
+
+
                     if(mainRespo.status){
 
+                        if(rememberPassword){
+                            let localstorage = {"un":aId,"ps":aPassword};
+                            localStorage.setItem("adminInfo", JSON.stringify(localstorage));
+                        }
+
+                    window.open('./cb-superAdmin/index','_self');
+
                     }
-                    $("#respo-status").html(mainRespo.msg);
 
 
 
