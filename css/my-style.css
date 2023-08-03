@@ -1,0 +1,54 @@
+body{
+    background-color: #ff783c4d;
+   
+}
+
+.bg-bhagwa{
+    background:#e26228;
+}
+
+.bg-light-bhagwa{
+    background-color: #ff783c4d;
+}
+
+.text-bhagwa{
+    color:#e26228;
+}
+
+.btn-bhagwa{
+    background:#e26228;
+    color:#fff;
+}
+
+.btn-bhagwa:hover{
+
+    border:solid 1px #e26228;
+    color:#e26228;
+    background:#fff;
+  
+}
+
+
+.border-radius10{
+    border-radius:10px;
+}
+
+
+
+/* font */
+
+.font10{
+    font-size:10px;
+}
+
+.font11{
+    font-size:11px;
+}
+
+.font12{
+    font-size:12px;
+}
+
+.font13{
+    font-size:13px;
+}

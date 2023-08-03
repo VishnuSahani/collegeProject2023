@@ -1,3 +1,6 @@
+<?php 
+session_start(); 
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -16,6 +19,7 @@
     <!-- Bootstrap CSS -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" > -->
     <link href="./b5/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="./css/my-style.css" rel="stylesheet" >
     <link href="./fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 		
 	

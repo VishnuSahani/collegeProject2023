@@ -1,11 +1,13 @@
 <?php
+
+include("checkSession.php");
 include("admin-header.php")
     ?>
 
 <div class="container my-4">
     <div class="row">
         <div class="col-xl-4 col-lg-4 col-md-4 col-12 my-1">
-            <div class="card container-hover p-3  rounded-pill animate__animated  animate__bounceIn">
+            <div class="card container-hover p-3  rounded-pill animate__animated  animate__zoomIn">
                 <div class="d-flex justify-content-start">
                     <div class="p-1">
                         <img src="../images/member.png" class="img-fluid rounded-circle dashboardIcon">
@@ -13,7 +15,7 @@ include("admin-header.php")
                     </div>
                     <div class="flex-fill d-flex justify-content-center align-items-center ">
                         <div class="fs-5">
-                            Member (05)
+                            Member (<span id="numberOfMember">0</span>)                        
                         </div>
 
                     </div>
@@ -25,7 +27,7 @@ include("admin-header.php")
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-12 my-1">
 
-            <div class="card container-hover p-3 rounded-pill animate__animated  animate__bounceIn">
+            <div class="card container-hover p-3 rounded-pill animate__animated  animate__zoomIn">
                 <div class="d-flex justify-content-evenly">
                     <div class="p-1">
                         <img src="../images/student.png" class="img-fluid rounded-circle dashboardIcon">
@@ -33,7 +35,7 @@ include("admin-header.php")
                     </div>
                     <div class="flex-fill d-flex justify-content-center align-items-center">
                         <div class="fs-5">
-                            Student (100)
+                            Student  (<span id="numberOfStudent">0</span>)
                         </div>
 
                     </div>
@@ -45,7 +47,7 @@ include("admin-header.php")
 
         <div class="col-xl-4 col-lg-4 col-md-4 col-12 my-1">
 
-            <div class="card container-hover p-3  rounded-pill animate__animated  animate__bounceIn">
+            <div class="card container-hover p-3  rounded-pill animate__animated  animate__zoomIn">
                 <div class="d-flex justify-content-start">
                     <div class="p-1">
                         <img src="../images/doc.png" class="img-fluid rounded-circle dashboardIcon">
@@ -90,7 +92,7 @@ include("admin-header.php")
                     Member Details
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive  animate__animated  animate__zoomIn">
                     <table class="table table-striped table-light">
                         <thead class="table-dark">
                             <tr>
@@ -118,7 +120,7 @@ include("admin-header.php")
                 Student Details
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive  animate__animated  animate__zoomIn">
                 <table class="table table-striped table-light">
                     <thead class="table-dark">
                         <tr>
@@ -241,7 +243,7 @@ include("admin-footer.php")
     }
 
 
-    function createPayeeTableData(dataList) {
+    function createMemberTableData(dataList) {
         let htmlContent = "";
 
         if (dataList.length == 0) {
@@ -276,6 +278,42 @@ include("admin-footer.php")
         // $("#studenttableData").html(htmlContent);
     }// draw table
 
+
+    
+    function createStudentTableData(dataList) {
+        let htmlContent = "";
+
+        if (dataList.length == 0) {
+
+            htmlContent += `
+               <tr>
+               <td class="text-danger" colspan="5">Currently no Student registered..!</td>
+               </tr>
+          `;
+
+        } else {
+
+            dataList.forEach((value, index) => {
+
+                htmlContent += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${value['fullName']}</td>
+                        <td>${value['email']}</td>
+                        <td>${value['branch']}</td>
+                        <td><span class="hoverGreen cursor-pointer"><i class="fas fa-eye"></i></span></td>
+                       
+                    </tr>
+
+                 `;
+            });
+        }
+
+
+
+        $("#studenttableData").html(htmlContent);
+    }// draw table
+
     function getMemberData() {
         $.ajax({
             type: "POST",
@@ -291,7 +329,30 @@ include("admin-footer.php")
                 let mainData = JSON.parse(respo);
                 _memberData = mainData['data'];
                 console.log(_memberData);
-                createPayeeTableData(_memberData);
+                $("#numberOfMember").html(_memberData.length)
+                createMemberTableData(_memberData);
+
+            }
+        })
+    }
+
+    function getStudentData() {
+        $.ajax({
+            type: "POST",
+            url: "superAdminAction.php",
+            data: { "action": "getStudentDetails" },
+            beforeSend: function () {
+                $("#sub_global_loader_member").removeClass("d-none");
+
+            },
+            success: function (respo) {
+                $("#sub_global_loader_member").addClass("d-none");
+
+                let mainData = JSON.parse(respo);
+                _studentData = mainData['data'];
+                console.log(_studentData);
+                $("#numberOfStudent").html(_studentData.length)
+                createStudentTableData(_studentData);
 
             }
         })
@@ -299,6 +360,7 @@ include("admin-footer.php")
 
     $(document).ready(function () {
         getMemberData();
+        getStudentData();
 
         $("#addAMemberForm").submit(function (e) {
             e.preventDefault();
@@ -355,7 +417,7 @@ include("admin-footer.php")
                 },
                 success: function (respo) {
                     $("#global_loader").addClass("d-none");
-                    $("#addMemberBtn").html("addMemberBtn").attr("disabled", false);
+                    $("#addMemberBtn").html("Submit").attr("disabled", false);
 
                     let mainRespo = JSON.parse(respo);
 
@@ -365,6 +427,8 @@ include("admin-footer.php")
                         $("#respo-status").html(mainRespo.msg).css("color", "green");
                         $(".form-control").removeClass("is-valid");
                         $("#addAMemberForm")[0].reset();
+                        $("#memberName").focus();
+                        getMemberData();
 
                     } else {
                         $("#respo-status").html(mainRespo.msg).css("color", "red");

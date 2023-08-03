@@ -136,6 +136,52 @@ if (isset($_POST['action']) && !empty($_POST['action'])) {
         die();
 
     }
+
+    // 
+
+    if ($action == "getStudentDetails") {
+
+        $q = "SELECT * FROM studentinfo WHERE studentStatus ='true'";
+
+        if (isset($_POST['std_email']) && !empty(trim($_POST['std_email']))) {
+            $id = trim($_POST['std_email']);
+            $q = "SELECT * FROM studentinfo WHERE std_email ='" . $id . "' && studentStatus ='true'";
+
+        }
+
+        $query = mysqli_query($con, $q);
+
+        if (mysqli_num_rows($query) <= 0) {
+            echo json_encode(array("status" => true, "msg" => "Currently no student registered..!","data"=>[]));
+            die();
+        }
+
+        $data = array();
+
+        while ($run = mysqli_fetch_array($query)) {
+            $obj = new stdClass();
+            $obj->id = $run['id'];
+            $obj->fullName = $run['fullName'];
+            $obj->email = $run['email_id'];
+            $obj->password = $run['stdPassword'];
+
+            $obj->mobile = $run['mobile'];
+            $obj->fatherName = $run['fatherName'];
+            $obj->branch = $run['branch'];
+            $obj->branchYear = $run['branchYear'];
+
+            $obj->photo = $run['photo'];
+            $obj->verified = $run['verified'];
+
+            $obj->createdDate = $run['createdDate'];
+            $obj->updatedDate = $run['updatedDate'];
+
+            $data[] = $obj;
+        }
+
+        echo json_encode(array("status" => true, "msg" => "Student data found", "data" => $data));
+
+    }
 }
 
 ?>

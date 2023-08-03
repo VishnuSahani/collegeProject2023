@@ -54,12 +54,21 @@ if(isset($_POST['action']) && !empty($_POST['action'])){
 
         $respo['status'] = true;
         $respo['msg'] = "Successfully Login....!";
+        session_start();
         $_SESSION['superAdminId'] = $id;
         
 
         echo json_encode($respo);
         die();
 
+
+    }else{
+
+        $respo['status'] = false;
+        $respo['msg'] = "Invalid Request";      
+
+        echo json_encode($respo);
+        die();
 
     }
 }

@@ -1,29 +1,31 @@
 <?php
 include("header.php");
+$_SESSION['homeNavbr'] ="FacultyLogin";
+include("nav-bar.php");
 ?>
 
-
-<section class="vh-100" style="background-color: #508bfc;">
-    <div class="container animate__animated  animate__zoomIn py-5 h-100">
+<!-- class="vh-100" -->
+<section >
+    <div class="container animate__animated  animate__zoomInLeft py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
                     <div class="card-body p-5">
 
-                        <form id="adminForm">
+                        <form id="LoginForm">
 
-                            <h3 class="mb-3">Admin Login</h3>
+                            <h3 class="mb-5">Faculty Login</h3>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="typeEmailX-2">Admin Id <span
+                                <label class="form-label" for="emailId">Email Id <span
                                         class="text-danger">*</span></label>
-                                <input type="text" id="typeEmailX-2" class="form-control form-control-lg" />
+                                <input type="text" id="emailId" class="form-control form-control-lg" />
                             </div>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="typePasswordX-2">Password <span
+                                <label class="form-label" for="password">Password <span
                                         class="text-danger">*</span></label>
-                                <input type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                                <input type="password" id="password" class="form-control form-control-lg" />
                             </div>
 
                             <!-- Checkbox -->
@@ -33,7 +35,7 @@ include("header.php");
                             </div>
 
                             <div class="my-1 d-grid">
-                            <button class="btn btn-primary btn btn-block" id="loginBtn" type="submit">Login</button>
+                            <button class="btn bg-bhagwa text-white btn btn-block" id="loginBtn" type="submit">Login</button>
 
                             </div>
 
@@ -63,23 +65,24 @@ include("footer.php");
 <script>
     $(document).ready(function () {
 
-        $("#adminForm").submit(function (e) {
+        $("#LoginForm").submit(function (e) {
             e.preventDefault();
 
-            let aId = "hum" //$("#typeEmailX-2").val();
-            let aPassword = "tum" // $("#typePasswordX-2").val();
+            let aId = $("#emailId").val();
+            let aPassword = $("#password").val();
             let rememberPassword = $("#rememberPassword").prop('checked') //$("#rememberPassword").prop("checked");
             console.log(rememberPassword);
 
             if (aId.length == 0 || aId == "" || aId == null || aId == undefined) {
 
-                $("#typeEmailX-2").addClass("is-invalid");
+                $("#emailId").addClass("is-invalid");
+                $("#emailId").focus();
                 return;
 
             } else {
 
-                $("#typeEmailX-2").removeClass("is-invalid");
-                $("#typeEmailX-2").addClass("is-valid");
+                $("#emailId").removeClass("is-invalid");
+                $("#emailId").addClass("is-valid");
 
 
             }
@@ -87,13 +90,14 @@ include("footer.php");
 
             if (aPassword.length == 0 || aPassword == ( "" || null || undefined)) {
 
-                $("#typePasswordX-2").addClass("is-invalid");
+                $("#password").addClass("is-invalid");
+                $("#password").focus();
                 return;
 
             } else {
 
-                $("#typePasswordX-2").removeClass("is-invalid");
-                $("#typePasswordX-2").addClass("is-valid");
+                $("#password").removeClass("is-invalid");
+                $("#password").addClass("is-valid");
 
 
             }
@@ -102,7 +106,7 @@ include("footer.php");
             $.ajax({
                 type:"POST",
                 url:"action.php",
-                data:{"action":"superAdminLogin","id":aId,"password":aPassword},
+                data:{"action":"StudentLogin","id":aId,"password":aPassword},
                 beforeSend:function(){
                     $("#loginBtn").html("Please wait..").attr("disabled",true);
 
@@ -118,10 +122,10 @@ include("footer.php");
 
                         if(rememberPassword){
                             let localstorage = {"un":aId,"ps":aPassword};
-                            localStorage.setItem("adminInfo", JSON.stringify(localstorage));
+                            localStorage.setItem("studentInfo", JSON.stringify(localstorage));
                         }
 
-                    window.open('./cb-superAdmin/index','_self');
+                    // window.open('./cb-superAdmin/index','_self');
 
                     }
 
@@ -147,3 +151,5 @@ include("footer.php");
         });
     });
 </script>
+
+
